@@ -20,12 +20,12 @@ class Import extends Controller {
 		<?
 		 $this->import_data ();
 	}
-	
+
 	function import_data ()
 	{
 		if ($this->session->userdata('USER_GROUP') == 'A' && ($this->session->userdata('USER_TYPE')==3 || $this->session->userdata('USER_TYPE')==2))
 		{
-			
+
 			if (is_import_data_finish ($this->session->userdata('SUB_DISTRICT')))
 			{
 				$this->Contents['import_completed'] = 'YES';
@@ -87,17 +87,17 @@ class Import extends Controller {
 						$this->template->write('error', 'Failed to Save CSV Data');
 					}
 				}
-				
-				
+
+
 			}
-	
+
 			$this->template->write_view('content', 'import/import_csv_data', $this->Contents);
 			$this->template->load();
 		}
 		else redirect ('welcome');
-		
+
 	}
-	
+
 	function import_district_kalolsavam_data ()
 	{
 		if ($this->session->userdata('USER_GROUP') == 'A' && $this->session->userdata('USER_TYPE')==2)
@@ -117,57 +117,57 @@ class Import extends Controller {
 				{
 					$this->template->write('error', 'Failed to Save CSV Data');
 				}
-				
+
 			}
-	
+
 			$this->template->write_view('content', 'import/import_csv_data', $this->Contents);
 			$this->template->load();
 		}
 		else redirect ('welcome');
-		
+
 	}
 	function backup_data(){
 
 		// Load the DB utility class
 		$this->load->dbutil();
-		
+
 		// Backup your entire database and assign it to a variable
 		$backup =& $this->dbutil->backup();
-		
+
 		// Load the file helper and write the file to your server
 		$this->load->helper('file');
-		write_file($_SERVER['DOCUMENT_ROOT'].'/kalolsavam_subdistrict2012/dbBackup/kalolsavam_subdistrict2012_'.date('d-m-Y-h-i-s').'.gz', $backup);
-		
+		write_file($_SERVER['DOCUMENT_ROOT'].'/kalolsavam_subdistrict2013/dbBackup/kalolsavam_subdistrict2013_'.date('d-m-Y-h-i-s').'.gz', $backup);
+
 		// Load the download helper and send the file to your desktop
 		$this->load->helper('download');
-		force_download('kalolsavam_subdistrict2012_'.date('d-m-Y-h-i-s').'.gz', $backup); 
+		force_download('kalolsavam_subdistrict2013_'.date('d-m-Y-h-i-s').'.gz', $backup);
 
 		$this->template->write_view('menu', 'menu', '');
 		$this->template->load();
-				
+
 		}
 	function backup_data_sql(){
 		if($back_up		=	$this->Import_Model->backup_tables()){
-		$message		=	'Database backup done sucessfully . To view the backup ,  file look in        '.$_SERVER['DOCUMENT_ROOT'].'/kalolsavam_subdistrict2012/dbBackup/';					
+		$message		=	'Database backup done sucessfully . To view the backup ,  file look in        '.$_SERVER['DOCUMENT_ROOT'].'/kalolsavam_subdistrict2013/dbBackup/';
 		$this->template->write('message', $message);
 		}
 		else{
 			$message		=	'Database backup failure . please check it';
-				
+
 		$this->template->write('error', $message);
 			}
 		$this->template->write_view('menu', 'menu', '');
 		$this->template->load();
-				
+
 		}
-			
-		
+
+
 		function restore_database(){
-					
+
 		$this->template->write_view('menu', 'menu', '');
 		if ($this->session->userdata('USER_GROUP') == 'W')
 		{
-			
+
 			if (isset($_FILES['kalolsavamdatabase']['name']) && !empty($_FILES['kalolsavamdatabase']['name']))
 			{
 				//echo "<br /><br /><br />kiii";
@@ -182,44 +182,44 @@ class Import extends Controller {
 				if ($this->session->userdata('USER_GROUP') == 'W')
 				{
 					$import_result	= $this->Import_Model->restore_Database ($file_name);
-					
-					
+
+
 					if (TRUE == $import_result)
 					{
 						$this->template->write_view('menu', 'menu', '');
 						$this->template->write('message', 'Restore Database successfully');
-					}					
+					}
 					else
 					{
 						$this->template->write('error', 'Failed to Restore Database');
 					}
-				}			
-				
+				}
+
 			}
-	
+
 			$this->template->write_view('content', 'import/restore_data', $this->Contents);
 			$this->template->load();
 		}
 		else redirect ('welcome');
-		
-	
-				
+
+
+
 		}
 		function initialize_data(){
-		
+
 		$this->template->write_view('content', 'import/initialize_tables');
 		$this->template->write_view('menu', 'menu', '');
 		$this->template->load();
-			
+
 		}
-		
+
 		function initialize_database_confirm(){
 		$initialize_data		=	$this->Import_Model->initialize_tables();
 		$message				=	'Database Initailzed sucessfully You can import the sudistrict data now';
 		$this->template->write('message', $message);
 		$this->import_district_kalolsavam_data();
 		}
-		
-		
+
+
 }
 ?>

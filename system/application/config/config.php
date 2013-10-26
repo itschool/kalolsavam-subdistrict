@@ -17,9 +17,9 @@ $port		=	(isset($_SERVER["SERVER_PORT"]) && ((!$isHTTPS && $_SERVER["SERVER_PORT
 $port		=	($port) ? ':'.$_SERVER["SERVER_PORT"] : '';
 $url		=	($isHTTPS ? 'https://' : 'http://').$_SERVER["SERVER_NAME"].$port;
 //$url		=	($isHTTPS ? 'https://' : 'http://').$_SERVER["SERVER_NAME"].$port.dirname($_SERVER['PHP_SELF']);
-   
-   
-$config['base_url']		=   $url."/kalolsavam_subdistrict_2012/";
+
+
+$config['base_url']		=   $url."/kalolsavam_subdistrict_2013/";
 $config['base_path']	=	constant("DOCUMENT_ROOT").'/';
 
 ini_set('memory_limit', '-1');
@@ -174,7 +174,7 @@ $config['directory_trigger'] 	= 'd'; // experimental not currently in use
 | Error Logging Threshold
 |--------------------------------------------------------------------------
 |
-| If you have enabled error logging, you can set an error threshold to 
+| If you have enabled error logging, you can set an error threshold to
 | determine what gets logged. Threshold options are:
 | You can enable error logging by setting a threshold over zero. The
 | threshold determines what gets logged. Threshold options are:
@@ -352,14 +352,14 @@ $config['useragent']     		=	null;
 $config['protocol']      		=	'smtp';
 $config['mailtype']      		=	'html';
 $config['mailpath']      		= 	null;
-$config['smtp_host']     		= 	'mail.aarthikaindia.com'; 
+$config['smtp_host']     		= 	'mail.aarthikaindia.com';
 $config['smtp_user']     		= 	'saji@aarthikaindia.com';
-$config['smtp_pass']     		= 	'aarthika1234'; 
-$config['smtp_port']     		= 	'25'; 
-$config['mail_from']     		= 	'support@aarthikaindia.com'; 
-$config['reply_to']     		= 	'support@aarthikaindia.com'; 
-$config['reply_to_name']     	= 	'Support PMRS'; 
+$config['smtp_pass']     		= 	'aarthika1234';
+$config['smtp_port']     		= 	'25';
+$config['mail_from']     		= 	'support@aarthikaindia.com';
+$config['reply_to']     		= 	'support@aarthikaindia.com';
+$config['reply_to_name']     	= 	'Support PMRS';
 
 /* End of file config.php */
-/* Location: ./system/application/config/config.php */ 
+/* Location: ./system/application/config/config.php */
 ?>

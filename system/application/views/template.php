@@ -18,12 +18,12 @@
 //]]>
 </script>
 <?php echo (isset($_scripts)) ? $_scripts : ''; ?>
-<title><?php echo (isset($title) and trim(@$title) !='') ? $title : 'Kalolsavam 2012-2013'; ?></title> 
+<title><?php echo (isset($title) and trim(@$title) !='') ? $title : 'Kalolsavam 2013-2014'; ?></title>
 </head>
 <body>
 <div id="mainContainer">
 <?php
-if(isset($header) && trim($header)!=''){ echo $header; } 
+if(isset($header) && trim($header)!=''){ echo $header; }
 if(isset($menu) && trim($menu)!=''){ echo $menu; } ?>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -34,7 +34,7 @@ if(isset($menu) && trim($menu)!=''){ echo $menu; } ?>
 	  <?php } ?>
       <td valign="top" align="left" class="left_bar_bg">
 	  <div style="padding-left:2px; padding-bottom:20px;">
-	  <?php 
+	  <?php
 		if(isset($message) && trim($message)!=''){ ?>
         <div style="margin:15px;" align="center">
           <?php box_top(); ?>
@@ -43,10 +43,10 @@ if(isset($menu) && trim($menu)!=''){ echo $menu; } ?>
           </div>
           <?php box_bottom(); ?>
         </div>
-        <?php 
+        <?php
 		}
 		?>
-        <?php 
+        <?php
 		if(isset($error) && trim($error) !='' ){ ?>
         <div style="margin:15px;" align="center">
           <?php box_top(); ?>
@@ -56,7 +56,7 @@ if(isset($menu) && trim($menu)!=''){ echo $menu; } ?>
           </div>
           <?php box_bottom(); ?>
         </div>
-        <?php 
+        <?php
 		}
 		?>
         <?php print $content ?> </div></td>
