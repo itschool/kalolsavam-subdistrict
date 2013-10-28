@@ -71,22 +71,21 @@ class Photos extends Controller {
             $admn_no = $this->input->post('hidadmn');
             $subDistrict = $this->General_Model->get_data('school_master', 'sub_district_code', array('school_code'=>$school_code));
             $subDistrict = $subDistrict[0]['sub_district_code'];
-            $this->load->library('upload', $config);
+            $this->load->library('upload');
+            $this->load->library('image_lib');
 
-            $_FILES['userfile']['name'] = $school_code."_".$admn_no.".".strtolower($this->ci->upload->get_extension($_FILES['userfile']['name']));
+            $_FILES['userfile']['name'] = $school_code."_".$admn_no.strtolower($this->upload->get_extension($_FILES['userfile']['name']));
             $config['upload_path']= 'photos/'.$subDistrict.'/'.$school_code;
             $config['allowed_types']= 'gif|jpg|png|jpeg';
             $config['max_size']= '1000';
             $config['max_width'] = '1500';
             $config['max_height'] = '1500';
             $config['overwrite'] = 	TRUE;
-            $upload_path= $config['upload_path'];
-            $image_name	= $_FILES['userfile']['name'];
 
             if (!is_dir ($config['upload_path'])){
                 mkdir ($config['upload_path'], 0777, true);
             }
-            $this->deletePhoto($school_code."_".$admn_no, $uploadPath);
+            $this->deletePhoto($school_code."_".$admn_no, $config['upload_path']);
             $this->upload->initialize($config);
 
             if ( ! $this->upload->do_upload())
@@ -98,24 +97,20 @@ class Photos extends Controller {
             else
             {
                 $finfo = $this->upload->data();
-                $config['image_library'] 	= 	'gd2';
-                $config['source_image'] 	= $finfo['full_path'];
-                $config['create_thumb'] 	= 	false;
-                $config['maintain_ratio'] 	= 	TRUE;
-                $config['width'] = 150;
-                $config['height'] = 150;
+                $config1['image_library'] 	= 	'gd2';
+                $config1['source_image'] 	= $finfo['full_path'];
+                $config1['create_thumb'] 	= 	false;
+                $config1['maintain_ratio'] 	= 	TRUE;
+                $config1['width'] = 150;
+                $config1['height'] = 150;
+                $this->image_lib->initialize($config1);
 
-                $this->load->library('image_lib', $config);
                 if ($this->image_lib->resize())
                 {
                     $data = array('upload_data' => $this->upload->data());
                     $this->regnum_wise_photo_interface($school_code,$admn_no);
                 }
-                else
-                {
-
-                }
-
+                $this->image_lib->clear();
             }
         }
 
@@ -129,6 +124,9 @@ class Photos extends Controller {
         {
             $total		=	$this->input->post('hidtot');
             $flag		=	0;
+            $this->load->library('upload');
+            $this->load->library('image_lib');
+
             for($i=1;$i<=$total;$i++)
             {
 
@@ -138,25 +136,22 @@ class Photos extends Controller {
                 $subDistrict = $subDistrict[0]['sub_district_code'];
                 $userfile			=	'userfile'.$i;
                 $file_selected		=	$_FILES[$userfile]['name'];
-                $this->load->library('upload', $config);
                 if($file_selected != '')
                 {
                     $flag	=	1;
                     $img = $school_code."_".$admn_no;
-                    $config['file_name'] = $school_code."_".$admn_no.".".strtolower($this->ci->upload->get_extension($_FILES['userfile']['name']));
+                    $config['file_name'] = $school_code."_".$admn_no.strtolower($this->upload->get_extension($_FILES["$userfile"]['name']));
                     $config['upload_path'] = "photos/$subDistrict/$school_code";
                     $config['allowed_types'] = 'gif|jpg|jpeg|png';
                     $config['max_size'] ='1000';
                     $config['max_width']= '1500';
                     $config['max_height'] =	'1500';
                     $config['overwrite'] = 	TRUE;
-                    $upload_path = $config['upload_path'];
-                    $image_name	= $im_name;
 
                     if (!is_dir ($config['upload_path'])){
                         mkdir ($config['upload_path'], 0777, true);
                     }
-                    $this->deletePhoto($img, $uploadPath);
+                    $this->deletePhoto($img, $config['upload_path']);
 
                     $this->upload->initialize($config);
 
@@ -169,14 +164,14 @@ class Photos extends Controller {
                     else
                     {
                         $finfo = $this->upload->data();
-                        $config['image_library'] 	= 	'gd2';
-                        $config['source_image'] 	= $finfo['full_path'];
-                        $config['create_thumb']	= false;
-                        $config['maintain_ratio'] = TRUE;
-                        $config['width'] = '150';
-                        $config['height'] =	'150';
+                        $config1['image_library'] 	= 	'gd2';
+                        $config1['source_image'] 	= $finfo['full_path'];
+                        $config1['create_thumb']	= false;
+                        $config1['maintain_ratio'] = TRUE;
+                        $config1['width'] = 150;
+                        $config1['height'] = 150;
+                        $this->image_lib->initialize($config1);
 
-                        $this->load->library('image_lib',$config);
                         if ($this->image_lib->resize())
                         {
                             $data = array('upload_data' => $this->upload->data());

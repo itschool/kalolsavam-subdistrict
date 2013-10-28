@@ -37,15 +37,14 @@ class Photos_Model extends Model{
     /********   Retrieving the Photo  *******/
 
 	function get_Photo($name,$schoolcode)
-	{
-		$url		=	base_url('/photos/'.$this->session->userdata('SUB_DISTRICT').'/'.$schoolcode.'/');
+    {
 		$dirname 	=   "photos/".$this->session->userdata('SUB_DISTRICT')."/".$schoolcode."/";
 		$exts 		= 	array('jpg', 'jpeg', 'gif', 'png');
 		foreach($exts as $ext)
 		{
 			if (file_exists($dirname.'/'.$name.'.'.$ext))
 			{
-				return $url.$name.'.'.$ext;
+				return base_url(false).$dirname.$name.'.'.$ext;
 			}
 		}
     }
@@ -88,7 +87,7 @@ class Photos_Model extends Model{
         {
             $regno							=	$stud_row['admn_no'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
             //echo "<br /><br />---->".$stud_row['admn_no']."<br /><br />";
         }
         // var_dump($PhotoReturn);
@@ -104,7 +103,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
             //echo "<br /><br />---->".$stud_row['admn_no']."<br /><br />";
         }
         // var_dump($PhotoReturn);
@@ -120,7 +119,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
         }
 
         foreach($arr['partcard1'] as $stud_row)
@@ -128,7 +127,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
         }
 
         foreach($arr['partcard2'] as $stud_row)
@@ -136,7 +135,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
         }
         return $PhotoReturn;
     }
@@ -150,7 +149,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
         }
         return $PhotoReturn;
     }
@@ -163,7 +162,7 @@ class Photos_Model extends Model{
             $regno							=	$stud_row['admn_no'];
             $schoolcode						=	$stud_row['school_code'];
             $img								=	$schoolcode."_".$regno;
-            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img);
+            $PhotoReturn['pic'][$regno]	    =	$this->get_Photo($img, $schoolcode);
         }
         return $PhotoReturn;
 
