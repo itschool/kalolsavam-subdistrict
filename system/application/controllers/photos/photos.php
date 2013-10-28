@@ -16,26 +16,6 @@ class Photos extends Controller {
 
     }
 
-    function index()
-    {
-
-           /* $dir = "/etc/php5/";
-
-            // Open a known directory, and proceed to read its contents
-            if (is_dir($dir))
-            {
-                if ($dh = opendir($dir))
-                {
-                    while (($file = readdir($dh)) !== false)
-                    {
-                        echo "filename: $file : filetype: " . filetype($dir . $file) . "\n";
-                    }
-                    closedir($dh);
-                }
-           }*/
-
-    }
-
     /***** Admission No wise Photo Uploading ******/
 
     function regnum_wise_photo_interface($school_code = NULL,$admn_no = NULL)
@@ -60,7 +40,7 @@ class Photos extends Controller {
         {
             $img							=	$schoolcode."_".$reg_no;
             $dataReturn['participant_det'] = $this->Photos_Model->get_participant_details($reg_no,$schoolcode);
-            $dataReturn['Photo']			=	$this->Photos_Model->get_Photo($img);
+            $dataReturn['Photo']			=	$this->Photos_Model->get_Photo($img, $schoolcode);
             $dataReturn['item_det'] = $this->Photos_Model->get_item_details($reg_no,$schoolcode);
             //echo "<br /><br /><br />--><br /><br />".var_dump(@$dataReturn['participant_det']);
             if($dataReturn['participant_det'])
@@ -87,53 +67,48 @@ class Photos extends Controller {
     {
         if($this->input->post('upload'))
         {
-            $school_code		=	$this->input->post('hidschcode');
-            $admn_no			=	$this->input->post('hidadmn');
-
-            //echo "<br />EXT-->".$ext;);
-            $ext				=   end(explode('.', $_FILES['userfile']['name']));
-            //echo "<br />EXT-->".$ext;
-
-            $im_name						=	$school_code."_".$admn_no.".".$ext;
-            $img							=	$school_code."_".$admn_no;
-            $_FILES['userfile']['name']		= 	$im_name;
-            $config['upload_path'] 			= 	'uploads/photos';
-            $config['allowed_types'] 		= 	'gif|jpg|png';
-            $config['max_size']				= 	'200';
-            $config['max_width']  			= 	'600';
-            $config['max_height']  			= 	'600';
-            $config['overwrite'] 			= 	TRUE;
-            $upload_path					= 	$config['upload_path'];
-            $image_name						= 	$_FILES['userfile']['name'];
-
+            $school_code = $this->input->post('hidschcode');
+            $admn_no = $this->input->post('hidadmn');
+            $subDistrict = $this->General_Model->get_data('school_master', 'sub_district_code', array('school_code'=>$school_code));
+            $subDistrict = $subDistrict[0]['sub_district_code'];
             $this->load->library('upload', $config);
+
+            $_FILES['userfile']['name'] = $school_code."_".$admn_no.".".strtolower($this->ci->upload->get_extension($_FILES['userfile']['name']));
+            $config['upload_path']= 'photos/'.$subDistrict.'/'.$school_code;
+            $config['allowed_types']= 'gif|jpg|png|jpeg';
+            $config['max_size']= '1000';
+            $config['max_width'] = '1500';
+            $config['max_height'] = '1500';
+            $config['overwrite'] = 	TRUE;
+            $upload_path= $config['upload_path'];
+            $image_name	= $_FILES['userfile']['name'];
+
+            if (!is_dir ($config['upload_path'])){
+                mkdir ($config['upload_path'], 0777, true);
+            }
+            $this->deletePhoto($school_code."_".$admn_no, $uploadPath);
             $this->upload->initialize($config);
 
             if ( ! $this->upload->do_upload())
             {
                 $error = array('error' => $this->upload->display_errors());
-                //echo "entereeeeedd".var_dump($error);
-
                 $this->template->write('error',$this->upload->display_errors());
                 $this->regnum_wise_photo_interface($school_code,$admn_no);
-
             }
             else
             {
+                $finfo = $this->upload->data();
                 $config['image_library'] 	= 	'gd2';
-                $config['source_image'] 	= 	$upload_path.$image_name;
-                $config['create_thumb'] 	= 	TRUE;
+                $config['source_image'] 	= $finfo['full_path'];
+                $config['create_thumb'] 	= 	false;
                 $config['maintain_ratio'] 	= 	TRUE;
-                $config['new_image']		= 	'thumb_'.$image_name;
-                $config['thumb_marker']		= 	'';
-                $config['width'] = '130';
-                $config['height'] = '130';
+                $config['width'] = 150;
+                $config['height'] = 150;
 
                 $this->load->library('image_lib', $config);
                 if ($this->image_lib->resize())
                 {
                     $data = array('upload_data' => $this->upload->data());
-                    // $arrData['data'] 			= 	$this->Reg_model->get_data();
                     $this->regnum_wise_photo_interface($school_code,$admn_no);
                 }
                 else
@@ -150,40 +125,39 @@ class Photos extends Controller {
 
     function bulk_upload()
     {
-        //$this->ini_set('upload_max_filesize','20M');
-        //echo "<br /><br /><br />jiiiiiiiii".$this->input->post('upload');
         if($this->input->post('upload'))
         {
             $total		=	$this->input->post('hidtot');
-            //echo "<br /><br />".$total."<br />";
             $flag		=	0;
             for($i=1;$i<=$total;$i++)
             {
 
                 $school_code		=	$this->input->post('hidschcode'.$i);
                 $admn_no			=	$this->input->post('hidadmn'.$i);
+                $subDistrict = $this->General_Model->get_data('school_master', 'sub_district_code', array('school_code'=>$school_code));
+                $subDistrict = $subDistrict[0]['sub_district_code'];
                 $userfile			=	'userfile'.$i;
-                //echo "<br /><br /><br /><br />".var_dump($_FILES);
                 $file_selected		=	$_FILES[$userfile]['name'];
-                //echo "<br /><br /><br />jiiiiiiiii".$file_selected;
+                $this->load->library('upload', $config);
                 if($file_selected != '')
                 {
                     $flag	=	1;
-                    $ext				=   end(explode('.', $_FILES[$userfile]['name']));
-                    $im_name						=	$school_code."_".$admn_no.".".$ext;
-                    $img							=	$school_code."_".$admn_no;
-                    $config['file_name']			=	$im_name;
-                    $config['upload_path'] 			= 	'uploads/photos';
-                    $config['allowed_types'] 		= 	'gif|jpg|png';
-                    $config['max_size']				= 	'200';
-                    $config['max_width']  			= 	'600';
-                    $config['max_height']  			= 	'600';
-                    $config['overwrite'] 			= 	TRUE;
-                    $upload_path					= 	$config['upload_path'];
-                    $image_name						= 	$im_name;
-                    //$config['image_type']		=	$ext;
+                    $img = $school_code."_".$admn_no;
+                    $config['file_name'] = $school_code."_".$admn_no.".".strtolower($this->ci->upload->get_extension($_FILES['userfile']['name']));
+                    $config['upload_path'] = "photos/$subDistrict/$school_code";
+                    $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                    $config['max_size'] ='1000';
+                    $config['max_width']= '1500';
+                    $config['max_height'] =	'1500';
+                    $config['overwrite'] = 	TRUE;
+                    $upload_path = $config['upload_path'];
+                    $image_name	= $im_name;
 
-                    $this->load->library('upload', $config);
+                    if (!is_dir ($config['upload_path'])){
+                        mkdir ($config['upload_path'], 0777, true);
+                    }
+                    $this->deletePhoto($img, $uploadPath);
+
                     $this->upload->initialize($config);
 
                     if ( ! $this->upload->do_upload($userfile))
@@ -194,31 +168,20 @@ class Photos extends Controller {
                     }
                     else
                     {
-                        //$check_format				=	$this->upload->set_image_properties();
-                        //var_dump($check_format);
+                        $finfo = $this->upload->data();
                         $config['image_library'] 	= 	'gd2';
-                        $config['source_image'] 	= 	$upload_path.$image_name;
-                        $config['create_thumb'] 	= 	TRUE;
-                        $config['maintain_ratio'] 	= 	TRUE;
-                        $config['new_image']		= 	'thumb_'.$image_name;
-                        $config['thumb_marker']		= 	'';
-                        $config['width'] 			= 	'130';
-                        $config['height'] 			= 	'130';
-                        //$check_format				=	$this->upload->is_image();
-                        //var_dump($check_format);
+                        $config['source_image'] 	= $finfo['full_path'];
+                        $config['create_thumb']	= false;
+                        $config['maintain_ratio'] = TRUE;
+                        $config['width'] = '150';
+                        $config['height'] =	'150';
 
                         $this->load->library('image_lib',$config);
                         if ($this->image_lib->resize())
                         {
                             $data = array('upload_data' => $this->upload->data());
-                            //echo "<br /><br />dataaaaaa".var_dump($data);
-                            // $arrData['data'] 			= 	$this->Reg_model->get_data();
                         }
-                        else
-                        {
-
-                        }
-
+                        $this->image_lib->clear();
                     }
 
                 }
@@ -312,9 +275,13 @@ class Photos extends Controller {
 
     }
 
+    function deletePhoto($photo, $directory)
+    {
+        if(substr($directory, -1) !== '/'){
+            $directory.="/";
+        }
+        exec("rm $directory$photo.*");
+    }
 
-
-
-    //----------------------------function end----------------------------------------------------------------------------------------------------
 }
 ?>

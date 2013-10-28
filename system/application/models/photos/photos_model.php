@@ -36,36 +36,20 @@ class Photos_Model extends Model{
 
     /********   Retrieving the Photo  *******/
 
-    function get_Photo($name)
-    {
-        $dirname 	=   false;
-        $photoId	=	$name;
-        $url		=	photo_url();
-        $dirname 	=   "uploads/photos/";
-        $exts 		= 	array('jpg','JPG','gif','GIF','png','PNG');
-        $image		=	"";
-
-        foreach($exts as $ext)
-        {
-            if (file_exists($dirname.'/'.$name.'.'.$ext))
-            {
-                $image = $name.'.'.$ext;
-            }
-        }
-
-        if ($image != "")
-        {
-            $broad_img1=$url."".$image;
-            return $broad_img1;
-        }
-        else
-        {
-            #
-            // error, we can't find the image.
-            #
-        }
-
+	function get_Photo($name,$schoolcode)
+	{
+		$url		=	base_url('/photos/'.$this->session->userdata('SUB_DISTRICT').'/'.$schoolcode.'/');
+		$dirname 	=   "photos/".$this->session->userdata('SUB_DISTRICT')."/".$schoolcode."/";
+		$exts 		= 	array('jpg', 'jpeg', 'gif', 'png');
+		foreach($exts as $ext)
+		{
+			if (file_exists($dirname.'/'.$name.'.'.$ext))
+			{
+				return $url.$name.'.'.$ext;
+			}
+		}
     }
+
     function get_count_schoolwise_participant_details($sch_code)
     {
         $dist	=	$this->session->userdata('DISTRICT');

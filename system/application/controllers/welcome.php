@@ -197,11 +197,11 @@ class Welcome extends Controller {
 
 		function export_photo(){
 			$this->load->library('zip');
-			$this->load->helper('file');
+            $this->load->helper('file');
 			ini_set('memory_limit','2048M');
-			$photo_path			=	"uploads/photos/";
+			$photo_path			=	'photos/'.$this->session->userdata('SUB_DISTRICT').'/';
 			$this->zip->read_dir($photo_path);
-			$this->zip->download('photos.zip');
+			$this->zip->download('photos_'.$this->session->userdata('SUB_DISTRICT').'.zip');
 		}
 	function itemMaster(){
 		$query1	=	mysql_query('INSERT INTO `item_master` (`item_id`, `item_code`, `vibhagam_id`, `fest_id`, `item_name`, `gender`, `item_type`, `max_time`, `time_type`, `max_participants`, `max_pinnani`, `is_off_stage`) VALUES

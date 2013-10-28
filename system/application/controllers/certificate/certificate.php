@@ -720,7 +720,7 @@ class Certificate extends Controller {
 
 			@$pic_pathName	=	$participant_array['school_code']."_".$participant_array['admn_no'];
 			//echo "<br /><br /><br /><br />----".@$pic_pathName;
-			@$pic_path	=	$this->Photos_model->get_Photo($pic_pathName);
+			@$pic_path	=	$this->Photos_model->get_Photo($pic_pathName, $participant_array['school_code']);
 			//echo "<br /><br /><br /><br />----".@$pic_path;
 
 			if($pic_path){
