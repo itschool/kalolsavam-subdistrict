@@ -384,24 +384,8 @@ class Login_Model extends Model{
 		$this->db->select('m.school_code, m2.school_name,m.is_finalize');
 		$this->db->from('school_details m');
 		$this->db->join('school_master AS m2',"m.school_code = m2.school_code AND m2.sub_district_code ='$subdist'");
-		$this->db->where("m.school_code NOT IN (SELECT c.school_code FROM user_cluster c JOIN school_master t ON c.school_code = t.school_code AND t.sub_district_code ='$subdist')");
 		$school_details		=	$this->db->get();
 		return $school_details->result_array();
-
-		/*
-		$qrt="SELECT m.school_code, m2.school_name,m.is_finalize
-			FROM school_details m
-			JOIN school_master AS m2 ON m.school_code = m2.school_code
-			AND m2.sub_district_code ='$subdist'
-			WHERE m.school_code NOT
-			IN (
-				SELECT c.school_code
-				FROM user_cluster c
-				JOIN school_master t ON c.school_code = t.school_code
-				AND t.sub_district_code ='$subdist')";
-				$fest_detail1		=	$this->db->query($qrt);
-				return $fest_detail1->result_array();
-				*/
 	}
 
 	function nonclustdetails_nosname($subdist)
@@ -410,22 +394,8 @@ class Login_Model extends Model{
 		$this->db->select('m2.school_name, m2.school_code');
 		$this->db->from('school_master AS m2');
 		$this->db->where('m2.sub_district_code',$subdist);
-		$this->db->where("m2.school_code NOT IN (SELECT c.school_code FROM user_cluster c JOIN school_master t ON c.school_code = t.school_code AND t.sub_district_code = '$subdist')");
 		$school_details		=	$this->db->get();
 		return $school_details->result_array();
-
-	/*$qrt="SELECT m2.school_name, m2.school_code
-		  FROM school_master AS m2
-			WHERE m2.sub_district_code = '$subdist'
-			AND m2.school_code NOT
-			IN (
-			SELECT c.school_code
-			FROM user_cluster c
-			JOIN school_master t ON c.school_code = t.school_code
-			AND t.sub_district_code = '$subdist')";
-			$fest_detail1		=	$this->db->query($qrt);
-				return $fest_detail1->result_array();
-		*/
 	}
 
 	function get_sub_admin_details($sub_district_code)
