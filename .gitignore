@@ -1,6 +1,11 @@
 nbproject
 photos/*
 !photos/index.html
+uploads/*
+!uploads/index.html
+!uploads/csv
+uploads/csv/*
+!uploads/csv/index.html
 
 ### vim ###
 .*.s[a-w][a-z]
