@@ -11,9 +11,9 @@ class Stage_Model extends Model{
 		$this->db->insert('stage_master',$data);
 		return $this->db->insert_id();
 	}
-	
-	
-	
+
+
+
 	function update_stage_details()
 	{
 		$stageId	=	$this->input->post('hidStId');
@@ -22,30 +22,30 @@ class Stage_Model extends Model{
 		$this->db->where('stage_id', $stageId);
 		$this->db->update('stage_master',$data);
 	}
-	
+
 	function get_stages()
 	{
 		$this->db->from('stage_master');
 		$this->db->orderby('stage_name', 'ASC');
 		$this->db->select('*');
-		$result		=	$this->db->get(); 
+		$result		=	$this->db->get();
 		return $result->result_array();
 	}
-	
-	function select_stage_details() 
+
+	function select_stage_details()
 	{
 		$this->db->where('stage_id', $this->input->post('hidStageId'));
 		$this->db->from('stage_master');
 		$this->db->select('*');
-		$result		=	$this->db->get(); 
+		$result		=	$this->db->get();
 		return $result->result_array();
 	}
-	
+
 	function delete_stage_details(){
 		$this->db->where('stage_id', $this->input->post('hidStageId'));
 		$this->db->delete('stage_master');
 	}
-	
+
 	function check_stagename_exists($id='', $stagename)
 	{
 		if($id != '')
@@ -58,12 +58,12 @@ class Stage_Model extends Model{
 		{
 			return true;
 		}
-		else 
+		else
 		{
 			return false;
 		}
 	}
-	
+
 	function get_item_details()
 	{
 		$this->db->where('item_code', $this->input->post('code'));
@@ -96,11 +96,11 @@ class Stage_Model extends Model{
 		}
 		return $result;
 	}
-	
+
 	function get_stage_name_array()
 	{
 		$stage_array		=	array();
-		for($i = 1; $i <=20; $i++)
+		for($i = 1; $i <=50; $i++)
 		{
 			$satege_name					=	'Stage '.$i;
 			$stage_array[$satege_name]		=	$satege_name;
