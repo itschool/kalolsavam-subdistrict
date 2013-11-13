@@ -13,7 +13,7 @@ function finisheditemdet(festid)
 	//alert($('hidfestid').value);
 	$('festdet').action = path+'publishresult/resultindex/finished_item';
 	$('festdet').submit();
-	
+
 }
 function remainderitemdet(festid)
 {
@@ -44,7 +44,7 @@ function gradewise()
 	{
 		alert("Enter School Code");
 		$('txtSchoolCode').focus();
-		return false;	
+		return false;
 	}
 }
 function checkitemwise()
@@ -53,15 +53,15 @@ function checkitemwise()
 	{
 		alert("Select a Festival from list");
 		$('cmbFestType').focus();
-		return false;	
+		return false;
 	}
 	if($('cbo_item').value==0)
 	{
 		alert("select a item from list");
 		$('cbo_item').focus();
-		return false;	
+		return false;
 	}
-	
+
 }
 function rankwise()
 {
@@ -69,7 +69,7 @@ function rankwise()
 	{
 		alert("Select a Festival from list");
 		$('cmbFestType').focus();
-		return false;	
+		return false;
 	}
 }
 function deleteStage(stageId) {
@@ -101,7 +101,7 @@ function cancel()
 
 function fetch_item_details()
 {
-	if($('txtItemCode').value.length >= 3){
+	if($('txtItemCode').value.length > 3){
 		var item_code	=	$('txtItemCode').value;
 		ajax_loder2('divSchoolCode');
 		var oOptions = {
@@ -115,12 +115,12 @@ function fetch_item_details()
 			   $('divEntryForm').innerHTML = response;
 		   }
 		};
-		var oRequest = new Ajax.Updater({ 
+		var oRequest = new Ajax.Updater({
 			//success: "divCustomerInfo"
-		}, path+"stage/allotment/get_item_details", oOptions);	
+		}, path+"stage/allotment/get_item_details", oOptions);
 		//alert("succ");
 	}else{
-		return false;	
+		return false;
 	}
 }
 
@@ -134,47 +134,47 @@ function clearText(fieldId, value){
 
 function fncCheckAllotmentDeatils (update)
 {
-	
+
 	if( $('cmbStage').value == '0')
 	{
 		alert('Please select stage');
 		$('cmbStage').focus();
-		return false;	
+		return false;
 	}
-	
+
 	if( $('txtDate').value == '')
 	{
 		alert('Please select date');
 		$('txtDate').focus();
-		return false;	
+		return false;
 	}
-	
+
 	if( $('txtHour').value == '' || $('txtHour').value == 'HH')
 	{
 		alert('Please enter hour');
 		$('txtHour').focus();
-		return false;	
+		return false;
 	}
-	
+
 	if( $('txtMin').value == '' || $('txtMin').value == 'MM')
 	{
 		alert('Please enter minute');
 		$('txtMin').focus();
-		return false;	
-	}	
-	
+		return false;
+	}
+
 	if( $('cmbNoOfCluster').value == '0')
 	{
 		alert('Please select number of clusters');
 		$('cmbNoOfCluster').focus();
-		return false;	
+		return false;
 	}
-	
+
 	if( $('cmbNoOfJudges').value == '0')
 	{
 		alert('Please select number of judges');
 		$('cmbNoOfJudges').focus();
-		return false;	
+		return false;
 	}
 	if(update == 1){
 		$('formAllotment').action = path+'stage/allotment/update_allotment';
@@ -202,7 +202,7 @@ function clickresultdeclered(festid)
 }
 function cickpointdeclared(festid)
 {
-	
+
 	$('hidfestId').value=festid;
 	$('festrep').action = path+'publishresult/resultindex/schoolpoints';
 	$('festrep').submit();

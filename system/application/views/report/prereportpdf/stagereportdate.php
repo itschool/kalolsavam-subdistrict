@@ -10,7 +10,7 @@
 	font-weight: bold;
 	color:#000000;
 }
-.style3{ 
+.style3{
 	font-size: 11px;
 	font-weight: bold;
 	color:#000000;
@@ -19,7 +19,7 @@
 font-size: 11px;
 	font-weight: bold;
 	color:#000000;}
-	
+
 .ety{
 	font-size: 12px;
 	color:#000000;
@@ -46,7 +46,7 @@ font-size: 11px;
 	<?php
 		$this->load->view('report/report_footer');
 	?>
-</page_footer>  
+</page_footer>
 
 
 
@@ -57,28 +57,30 @@ font-size: 11px;
     <td  class="tb"height="25" align="center" width='129' style="border-bottom:0px #000000; border-right:1px #000000; padding:0px;"> No.of <br />
     Participants/Teams</td>
     <td  class="tb" height="25" align="center" width='100' style="border-bottom:0px #000000; border-right:1px #000000; padding:0px;"> Tentative Time </td>
+    <td class="tb"  height="25" align="center" width='99' style="border-bottom:0px #000000; border-right:1px #000000; padding:0px;">Start Time </td>
     <td class="tb"  height="25" align="center" width='99' style="border-bottom:0px #000000; border-left:0px #000000; padding:0px;">Remarks </td>
   </tr>
  	 <?php
-		
+
             $count		=	0;
 			$grandtotal =   0;
             foreach($stagedata as $data)
 			{
 					$count++;
-					
+
 					$time		=	$data['max_time'] * $data['no_of_participant'];
-					$time		=	get_time_format($time);		
+					$time		=	get_time_format($time);
              ?>
   <tr>
    <td class="ety" align="center" style="border-top:1px #000000; border-right:1px #000000; padding:0px;"><?php echo $count;?></td>
    <td class="ety"  align="left" style="border-top:1px #000000; border-right:1px #000000; padding:0px;">&nbsp;<?php echo $data['item_code'].' - '.$data['item_name'].' ('.$data['fest_name'].')';?></td>
    <td class="ety" align="center" style="border-top:1px #000000; border-right:1px #000000; padding:0px;"><?php echo $data['no_of_participant'];?></td>
    <td class="ety"  align="center" style="border-top:1px #000000; border-right:1px #000000; padding:0px;"><?php echo $time?></td>
+   <td class="ety" align="center" style="border-top:1px #000000; border-right:1px #000000; padding:0px;"><?php echo $data['start_time'];?></td>
    <td class="ety" style="border-top:1px #000000; border-left:0px #000000; padding:0px;">&nbsp;</td>
   </tr>
 	  <?php } ?>
-  
+
 </table>
 
-</page>    
+</page>
