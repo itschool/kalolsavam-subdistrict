@@ -25,6 +25,7 @@
 */
 	$system_folder = "system";
 	ini_set("memory_limit","12M");
+	ini_set('max_execution_time', 1000);
 
 /*
 |---------------------------------------------------------------
