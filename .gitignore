@@ -6,6 +6,7 @@ uploads/*
 !uploads/csv
 uploads/csv/*
 !uploads/csv/index.html
+netbeans_autocomplete_codeigniter.php
 .vagrant
 
 ### vim ###
