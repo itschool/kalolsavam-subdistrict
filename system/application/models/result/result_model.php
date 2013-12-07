@@ -591,24 +591,10 @@ class Result_Model extends Model{
 					}
 				}
 				
-				
-				
-				/*$this->db->select('RM.item_code, RM.school_code, PID.participant_id, PID.admn_no, RM.grade, RM.rank, 
-										PID.parent_admn_no, IF(IFNULL(TRIM(SOM.is_publish), "Y")="Y", "N", "Y") AS is_withheld', FALSE);
-				$this->db->where('RM.item_code', $item_code);
-				$this->db->where_in('RM.grade', array('A', 'B', 'C'));
-				$this->db->from('result_master RM');
-				
-				$this->db->join("participant_item_details PID", "PID.parent_admn_no=RM.admn_no AND PID.school_code=RM.school_code 
-							AND PID.item_code=RM.item_code");
-				$this->db->join("special_order_master SOM", "SOM.spo_id=PID.spo_id", "LEFT");
-				$this->db->group_by('PID.participant_id,RM.item_code');*/
-				
 				$this->db->select('RM.item_code, RM.school_code, PID.participant_id, PID.admn_no, RM.grade, RM.rank,
                                         PID.parent_admn_no, IF(IFNULL(TRIM(SOM.is_publish), "Y")="Y", "N", "Y") AS is_withheld', FALSE);
                 $this->db->where('RM.item_code', $item_code);
-				$this->db->where('PID.item_code', $item_code);
-                //$this->db->where_in('RM.grade', array('A', 'B', 'C'));
+				$this->db->where('PID.item_code', $item_code);            
                 $this->db->from('result_master RM');
                
                 $this->db->join("participant_item_details PID", "PID.parent_admn_no=RM.admn_no AND PID.school_code=RM.school_code
